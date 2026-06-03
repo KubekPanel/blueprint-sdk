@@ -1,6 +1,6 @@
 {
   "name": "@kubekpanel/blueprint-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Type contract for Kubek server-type blueprints",
   "license": "MIT",
   "author": "KubekPanel",
@@ -9,7 +9,13 @@
     "type": "git",
     "url": "git+https://github.com/KubekPanel/blueprint-sdk.git"
   },
-  "keywords": ["kubek", "blueprint", "server-types", "sdk", "types"],
+  "keywords": [
+    "kubek",
+    "blueprint",
+    "server-types",
+    "sdk",
+    "types"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,7 +25,9 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
