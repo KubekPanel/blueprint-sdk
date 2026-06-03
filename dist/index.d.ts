@@ -187,6 +187,10 @@ export type InstallStep = {
 export interface StartupSpec {
     /** native: full command; docker: command inside the container */
     command?: string;
+    /**
+     * Per-OS launch command. Overrides `command`
+     */
+    commandByPlatform?: Partial<Record<KubekPlatform, string>>;
     workingDir?: string;
     stop: StopSpec;
 }

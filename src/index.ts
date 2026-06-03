@@ -118,7 +118,10 @@ export interface HttpStep {
 /** Contract of a blueprint-supplied resolver (versions.ts), executed in a sandbox. */
 export interface VersionResolver {
   listVersions(ctx: VersionResolverContext): Promise<VersionEntry[]>;
-  resolveDownload(version: string, ctx: VersionResolverContext): Promise<DownloadSpec>;
+  resolveDownload(
+    version: string,
+    ctx: VersionResolverContext,
+  ): Promise<DownloadSpec>;
 }
 
 export interface VersionResolverContext {
@@ -150,6 +153,10 @@ export type InstallStep =
 export interface StartupSpec {
   /** native: full command; docker: command inside the container */
   command?: string;
+  /**
+   * Per-OS launch command. Overrides `command`
+   */
+  commandByPlatform?: Partial<Record<KubekPlatform, string>>;
   workingDir?: string;
   stop: StopSpec;
 }
