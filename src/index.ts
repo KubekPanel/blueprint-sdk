@@ -19,6 +19,7 @@ export interface KubekBlueprintManifest {
   description?: string;
   /** game family: "minecraft" | "source" | "ark" | ... */
   game: string;
+  /** path to a .png inside the package, or an emoji/text icon */
   icon?: string;
   author?: { name: string; url?: string };
   /** semver of the blueprint itself */
