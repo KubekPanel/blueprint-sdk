@@ -32,10 +32,17 @@ export interface KubekBlueprintManifest {
     /**
      * Operating systems this server type can run on. Omit to allow every platform.
      * When set, the panel only offers the blueprint on a matching host. This is a
-     * coarse availability gate, distinct from docker image platforms (see runtime.docker.platforms)
+     * coarse availability gate, distinct from docker image platforms (see dockerProfile.platforms)
      */
     platforms?: KubekPlatform[];
     runtime: BlueprintRuntime;
+    /**
+     * Docker launch profile. Required whenever the blueprint can run in docker, either
+     * docker-only (runtime.kind === "docker") or dual-capable (runtime.kind === "native"
+     * plus this profile, the panel picks the runtime at create time and freezes it per server).
+     * Omit for native-only blueprints. The invariant is enforced by the manifest validator, not the type
+     */
+    dockerProfile?: DockerProfile;
     variables: BlueprintVariable[];
     versions: VersionSpec;
     install: InstallSpec;
@@ -51,20 +58,34 @@ export interface KubekBlueprintManifest {
         value: string;
     };
 }
+/** Selects how the panel launches the server. Docker config lives in dockerProfile */
 export type BlueprintRuntime = {
     kind: "native";
 } | {
     kind: "docker";
-    /** with substitutions, e.g. "itzg/minecraft-server:{{IMAGE_TAG}}" */
+};
+/** All docker-runtime config for a blueprint. Every string supports {{...}} substitutions */
+export interface DockerProfile {
+    /** image with substitutions, e.g. "itzg/minecraft-server:java{{JAVA_VERSION}}" */
     image: string;
-    platforms?: string[];
+    /** maps container env vars to substituted values, e.g. { TYPE: "PAPER", VERSION: "{{GAME_VERSION}}" } */
+    env: Record<string, string>;
+    /** keep stdin attached so the panel console can write commands (default true) */
     stdinOpen?: boolean;
+    /** container user, usually unneeded since file ownership is handled via PUID/PGID */
     user?: string;
+    /** bind mounts, defaults to [{ host: "{{SERVER_DIR}}", container: "/data" }] */
     mounts?: {
         host: string;
         container: string;
     }[];
-};
+    /** docker image platforms, e.g. ["linux/amd64", "linux/arm64"] */
+    platforms?: string[];
+    /** how to stop the container, defaults to the blueprint's startup.stop */
+    stop?: StopSpec;
+    /** install steps for docker mode, defaults to [{ type: "dockerPull", image }] */
+    install?: InstallStep[];
+}
 export interface BlueprintVariable {
     key: string;
     label?: string;
