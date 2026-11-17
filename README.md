@@ -20,12 +20,13 @@ import type {
 See the [blueprint starter template](https://github.com/KubekPanel/blueprint-template)
 for a complete, working example.
 
-## Install steps (0.3)
+## Install steps (0.3.1)
 
 - `exec`: runs a command in the server folder through `sh` / `cmd`, with `commandByPlatform` and
   `timeoutSec` (default 900). `{{JAVA_BIN}}` is available when the blueprint declares `JAVA_VERSION`.
 - `steamcmd`: anonymous SteamCMD `app_update` into the server folder: `appId`, optional `beta`,
   `betaPassword`, `platform` (force another OS build) and `validate` (default true).
+- `gameName`: game title, the panel groups server types with the same `game` under it.
 - `DownloadSpec.vars`: extra `{{...}}` values a resolver hands to the install steps, for example the
   exact loader build it picked. They never override variables.
 
