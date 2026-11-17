@@ -20,6 +20,18 @@ import type {
 See the [blueprint starter template](https://github.com/KubekPanel/blueprint-template)
 for a complete, working example.
 
+## Install steps (0.3)
+
+- `exec`: runs a command in the server folder through `sh` / `cmd`, with `commandByPlatform` and
+  `timeoutSec` (default 900). `{{JAVA_BIN}}` is available when the blueprint declares `JAVA_VERSION`.
+- `steamcmd`: anonymous SteamCMD `app_update` into the server folder: `appId`, optional `beta`,
+  `betaPassword`, `platform` (force another OS build) and `validate` (default true).
+- `DownloadSpec.vars`: extra `{{...}}` values a resolver hands to the install steps, for example the
+  exact loader build it picked. They never override variables.
+
+Query protocols the panel speaks: `minecraft-java`, `minecraft-bedrock`, `source-a2s`,
+`gamedig:<id>` and `none`.
+
 ## Docker runtime
 
 `runtime.kind` selects how the panel launches the server: `"native"` (a host process) or `"docker"`

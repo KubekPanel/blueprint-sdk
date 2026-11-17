@@ -153,6 +153,8 @@ export interface DownloadSpec {
   url: string;
   unpack?: boolean;
   filename?: string;
+  /** Extra {{...}} values for the install steps, e.g. the exact loader version picked */
+  vars?: Record<string, string>;
 }
 
 export interface InstallSpec {
@@ -166,7 +168,31 @@ export type InstallStep =
   | { type: "chmod"; path: string; mode: string }
   | { type: "script"; shell: "bash" | "sh"; file?: string; inline?: string }
   | { type: "dockerPull"; image: string }
-  | { type: "template"; src: string; dest: string };
+  | { type: "template"; src: string; dest: string }
+  | ExecStep
+  | SteamCmdStep;
+
+/** Runs a command in the server folder through sh or cmd, like the startup command */
+export interface ExecStep {
+  type: "exec";
+  command: string;
+  commandByPlatform?: Partial<Record<KubekPlatform, string>>;
+  /** Default 900 */
+  timeoutSec?: number;
+}
+
+/** Installs or updates a Steam app into the server folder with an anonymous SteamCMD login */
+export interface SteamCmdStep {
+  type: "steamcmd";
+  appId: string;
+  /** Branch, e.g. "experimental" */
+  beta?: string;
+  betaPassword?: string;
+  /** Download the build for another OS, e.g. "windows" for a Wine server */
+  platform?: "windows" | "linux" | "macos";
+  /** Default true */
+  validate?: boolean;
+}
 
 export interface StartupSpec {
   /** native: full command; docker: command inside the container */
