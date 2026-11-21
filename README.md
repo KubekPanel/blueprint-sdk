@@ -33,6 +33,16 @@ for a complete, working example.
 Query protocols the panel speaks: `minecraft-java`, `minecraft-bedrock`, `source-a2s`,
 `gamedig:<id>` and `none`.
 
+## Stop timeout (0.4.0)
+
+- `stop.timeoutSec`: seconds the panel waits for the process to exit after the stop command or signal,
+  then kills it. Defaults to the panel's `KUBEK_STOP_TIMEOUT` (60 s). Useful for servers that finish
+  shutting down but keep waiting for input. Kubek 4.1.3+, older panels ignore it.
+
+```ts
+stop: { type: "command", value: "exit", timeoutSec: 10 },
+```
+
 ## Docker runtime
 
 `runtime.kind` selects how the panel launches the server: `"native"` (a host process) or `"docker"`

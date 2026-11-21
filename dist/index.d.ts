@@ -239,7 +239,7 @@ export interface StartupSpec {
     workingDir?: string;
     stop: StopSpec;
 }
-export type StopSpec = 
+export type StopSpec = StopTimeout & (
 /** send to stdin, e.g. "stop" */
 {
     type: "command";
@@ -251,7 +251,15 @@ export type StopSpec =
  | {
     type: "rcon";
     command: string;
-};
+});
+export interface StopTimeout {
+    /**
+     * Seconds to wait for the exit before the process is killed, 1-3600, panel default is 60.
+     * For servers that shut down but never exit on their own
+     * @since Kubek 4.1.3, older panels ignore it
+     */
+    timeoutSec?: number;
+}
 export interface DetectionSpec {
     /** RegExp source strings */
     starting?: string[];
